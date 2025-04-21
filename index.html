@@ -18,6 +18,14 @@
     <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
     
     <script>
+      // ✅ Android로 데이터 전달하는 함수
+      function postMessageToAndroid(postData) {
+        if (window.callbackHandler && window.callbackHandler.postMessage) {
+          window.callbackHandler.postMessage(JSON.stringify(postData));
+        } else {
+          console.log("❌ Android 메시지 핸들러가 존재하지 않습니다.");
+        }
+      }
       // ✅ iOS로 데이터 전달하는 함수
       function postMessageToiOS(postData) {
         if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.callbackHandler) {
@@ -42,8 +50,9 @@
 
             console.log("📩 iOS로 전달할 주소 데이터:", postData);
 
-            // ✅ 주소 선택 완료 후 iOS로 데이터 전달
+            // ✅ 주소 선택 완료 후 iOS&안드로이드로 데이터 전달
             postMessageToiOS(postData);
+            postMessageToAndroid(postData);
           },
           width: "100%",
           height: "100%",
